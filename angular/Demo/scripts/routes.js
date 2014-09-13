@@ -12,5 +12,9 @@ myRoute.config(function ($routeProvider) {
             controller: 'HomeCtrl',
             templateUrl: 'views/home.html'
         })
+        .when('/login', {
+            controller:'LoginCtrl',
+            templateUrl:'views/login.html'
+        })
         .otherwise('/');
 });
