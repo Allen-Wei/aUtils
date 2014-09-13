@@ -62,6 +62,7 @@
             if (defOpt.test) {
                 var deferred = $.Deferred();
                 var promise = deferred.promise();
+                //Note Trigger Event upload.file.autils
                 $input.trigger('upload.file.autils', promise);
                 promise.done(function(data){
                     $input.trigger('complete.upload.file.autils', [data, promise]);

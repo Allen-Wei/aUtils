@@ -49,7 +49,7 @@
     $.fn.pagination = function (userOpt) {
         var defOpt = {
             id: 'pagination',
-            klass: 'pagination',
+            'class': 'pagination',
             first: 'first',
             last: 'last',
             total: 5,
@@ -59,7 +59,7 @@
         $.extend(defOpt, userOpt);
 
         var $pages = $('<ul />').attr({
-            'class': defOpt.klass,
+            'class': defOpt['class'],
             id: defOpt.id
         });
         if (defOpt.first) {
@@ -79,6 +79,7 @@
         }
         $pages.on('click', 'li', function () {
             var $li = $(this);
+
             $li.addClass('active').siblings('li').removeClass('active');
 
             if ($li.is(defOpt.first)) {
@@ -284,6 +285,7 @@
             }, timer);
         });
     };
+
     $.prototype.popUpV1 = function (userOpt) {
         var option = {
             bgId: $.random('id'),
@@ -424,6 +426,7 @@
 
         return this;
     };
+
     $.prototype.popUpClone = function (userOpt) {
         var option = {
             bgId: $.random('id'),

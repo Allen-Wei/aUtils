@@ -4,6 +4,7 @@
 
 (function($) {
     if (!window.aUtils) window.aUtils = function() {};
+
     aUtils.RadGridClient = function(arg1) {
         this.clientId = '';
         this.table = undefined;

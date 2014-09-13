@@ -4,7 +4,6 @@
     if (!window.aUtils) window.aUtils = function () { };
     aUtils.jQuery = function () { }
 
-    //#region jQuery Implement
     $.fn.validThis = function (form) {
         var options = $(form).data('options');
         var $ele = $(this);
@@ -200,7 +199,6 @@
 
         return validResult;
     };
-    //#endregion
 
 })(jQuery);
 

@@ -12,25 +12,37 @@
     <script src="./javascripts/scripts/aUtils.File.js"></script>
     <script src="./javascripts/scripts/aUtils.jQuery.js"></script>
     <style type="text/css">
+        .container{margin-top: 30px;}
     </style>
 </head>
-<!-- File upload -->
-<div id="file" data-accept-mime-type="image/*" data-test="true"
-     data-test-image="https://assets-cdn.github.com/images/modules/dashboard/bootcamp/octocat_fork.png"
-     data-reset-btn="true"></div>
-<script>
-    aUtils.File.initial($('#file')[0], {
-        handleData: function (data) {
-            return data.msg;
-        }
-    });
-</script>
+<div class="container">
+    <div class="row">
+        <!-- File upload -->
+        <div id="file"
+             data-accept-mime-type="image/*"
+             data-test="true"
+             data-test-image="https://assets-cdn.github.com/images/modules/dashboard/bootcamp/octocat_fork.png"
+             data-reset-btn="true"
+             data-reset-btn-class="btn btn-default"></div>
+        <script>
+            aUtils.File.initial($('#file')[0], {
+                handleData: function (data) {
+                    return data.msg;
+                }
+            });
+        </script>
+    </div>
+    <div class="row">
 
-<!-- Pagination -->
-<div id="page"></div>
-<script>
-    $('#page').pagination();
-</script>
+        <!-- Pagination -->
+        <div id="page"></div>
+        <script>
+            $('#page').pagination();
+        </script>
+    </div>
+</div>
+
+
 <body>
 </body>
 </html>
