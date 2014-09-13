@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c156c4b8-c1c8-44fb-98f2-ee0e36b101a9" name="Default" comment="update via webstorm">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/styles/bootstrap-theme.css" afterPath="$PROJECT_DIR$/styles/bootstrap-theme.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/styles/bootstrap.css" afterPath="$PROJECT_DIR$/styles/bootstrap.css" />
+    <list default="true" id="c156c4b8-c1c8-44fb-98f2-ee0e36b101a9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -31,8 +29,8 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19424461" vertical-offset="0" max-vertical-offset="695">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.17266187" vertical-offset="0" max-vertical-offset="695">
+              <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -89,9 +87,9 @@
         <option value="$PROJECT_DIR$/javascripts/scripts/aUtils.File.js" />
         <option value="$PROJECT_DIR$/javascripts/scripts/aUtils.js" />
         <option value="$PROJECT_DIR$/javascripts/scripts/aUtils.jQuery.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/styles/bootstrap.css" />
         <option value="$PROJECT_DIR$/styles/bootstrap-theme.css" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -313,7 +311,11 @@
       <created>1410601655818</created>
       <updated>1410601655818</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="update via webstorm">
+      <created>1410601754539</created>
+      <updated>1410601754539</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -530,8 +532,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19424461" vertical-offset="0" max-vertical-offset="695">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.17266187" vertical-offset="0" max-vertical-offset="695">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
           <folding />
         </state>
       </provider>
