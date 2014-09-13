@@ -6,29 +6,7 @@
     <script src="./javascripts/vendor/angular.js"></script>
     <script type="text/javascript">
         var app = angular.module('myApp', []);
-        app.value('Key', '39fja-39j-1j-99455-afj');
-        app.factory('ShopCartSvc', function($http){
-            var service = {};
-            return service;
-        });
 
-        app.factory('loginInterceptor', function($q){
-            return {
-                request:function(config){
-                    config.params.ref="good";
-                    return config || $q.when(config);
-                },
-                response:function(config){
-                    console.log(config);
-                    return config || $q.when(config);
-                }
-            };
-        });
-
-        app.config(function($httpProvider){
-            $httpProvider.defaults.headers.common['X-Key'] = 'Key';
-            $httpProvider.interceptors.push('loginInterceptor');
-        });
         app.controller('UserCtrl', function($scope, $rootScope, Key){
             $scope.user = {
                 name:'Alan',
