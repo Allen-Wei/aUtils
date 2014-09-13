@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+        app.value('Key', '39fja-39j-1j-99455-afj');
+        app.factory('ShopCartSvc', function($http){
+            var service = {};
+            return service;
+        });
+
+        app.factory('loginInterceptor', function($q){
+            return {
+                request:function(config){
+                    config.params.ref="good";
+                    return config || $q.when(config);
+                },
+                response:function(config){
+                    console.log(config);
+                    return config || $q.when(config);
+                }
+            };
+        });
+
+        app.config(function($httpProvider){
+            $httpProvider.defaults.headers.common['X-Key'] = 'Key';
+            $httpProvider.interceptors.push('loginInterceptor');
+        });
+        app.controller('UserCtrl', function($scope, $rootScope, Key){
+            $scope.user = {
+                name:'Alan',
+                age:23
+            };
+            $rootScope.root = {
+                name:'root'
+            };
+
+            $rootScope.$on('modify', function(){
+                console.log(arguments);
+            });
+        });
+        app.controller('LoginCtrl', function($scope, $rootScope, $http){
+            $scope.user = {
+                email:'alan@gmail.com',
+                password:''
+            };
+            var promise = $http({
+                url:'/params.json',
+                params:{"name": "url"}
+            });
+            $scope.reset = function(){
+                $scope.$emit('modify', 'hehe');
+            }
+        });
+    </script>
+</head>
+<body ng-app="myApp">
+<div ng-controller="UserCtrl">
+    {{user.name}}
+    {{root.body}}
+</div>
+<div ng-controller="LoginCtrl">
+    <input ng-model="root.name" />
+    <button ng-click="reset()">update</button>
+</div>
+</body>
+</html>
