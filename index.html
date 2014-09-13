@@ -9,16 +9,26 @@
     <script src="./javascripts/vendor/jquery-1.11.0.js"></script>
     <script src="./javascripts/scripts/aUtils.js"></script>
     <script src="./javascripts/scripts/aUtils.File.js"></script>
+    <script src="./javascripts/scripts/aUtils.jQuery.js"></script>
     <style type="text/css">
     </style>
 </head>
-<div id="file" data-accept-mime-type="image/*" data-test="true" data-test-image="https://assets-cdn.github.com/images/modules/dashboard/bootcamp/octocat_fork.png" data-reset-btn="true"></div>
+<!-- File upload -->
+<div id="file" data-accept-mime-type="image/*" data-test="true"
+     data-test-image="https://assets-cdn.github.com/images/modules/dashboard/bootcamp/octocat_fork.png"
+     data-reset-btn="true"></div>
 <script>
     aUtils.File.initial($('#file')[0], {
-        handleData:function(data){
+        handleData: function (data) {
             return data.msg;
         }
     });
+</script>
+
+<!-- Pagination -->
+<div id="page"></div>
+<script>
+    $('#page').pagination();
 </script>
 <body>
 </body>

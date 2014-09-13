@@ -1,5 +1,11 @@
-﻿///require jquery
-/// <reference path="../Library/jquery-1.11.0.js" />
+﻿///require aUtils.js
+///require jquery.js
+/*
+* Author: Alan
+* Start Date: 2014-09-13
+* Last Update: 2014-09-13
+* */
+
 
 (function () {
     if (!window.aUtils) window.aUtils = function () {

@@ -1,4 +1,11 @@
 ﻿
+/*
+ * Author: Alan
+ * Start Date: 2014-09-13
+ * Last Update: 2014-09-13
+ * */
+
+
 (function () {
     if (!window.aUtils) window.aUtils = function () { };
 
@@ -16,8 +23,11 @@
 
 
 
-//(function () {
-//    if (!window.aUtils) window.aUtils = function () { };
+/*
+Example:
 
-//})();
+(function () {
+    if (!window.aUtils) window.aUtils = function () { };
+})();
+*/
 

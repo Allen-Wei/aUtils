@@ -1,4 +1,7 @@
-﻿
+﻿///require aUtils.js
+///require jquery.js
+
+
 (function($) {
     if (!window.aUtils) window.aUtils = function () { };
     aUtils.jQuery = function () { }
@@ -24,6 +27,24 @@
         return $.ajax(ajaxOpt);
     };
 
+    $.alanAjax = function (userOpt) {
+        var options = {
+            url: '',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: {},
+            type: 'POST',
+            done: function (data) { },
+            fail: function () { }
+        };
+
+        if (userOpt) $.extend(options, userOpt);
+        $.ajax(options)
+            .done(options.done)
+            .fail(options.fail);
+    };
+
+
 
     $.fn.pagination = function (userOpt) {
         var defOpt = {
@@ -34,6 +55,7 @@
             total: 5,
             selectedNumber: 1
         };
+
         $.extend(defOpt, userOpt);
 
         var $pages = $('<ul />').attr({
@@ -77,7 +99,6 @@
     };
 
 
-    //#region Tool
     //move jquery object to screen center
     //html is optional parameter.
     $.prototype.moveCenter = function (html) {
@@ -192,24 +213,7 @@
         };
     }
 
-    //send ajax, default send json ajax
-    //url, done callback must be fill
-    $.alanAjax = function (userOpt) {
-        var options = {
-            url: '',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: {},
-            type: 'POST',
-            done: function (data) { },
-            fail: function () { }
-        };
 
-        if (userOpt) $.extend(options, userOpt);
-        $.ajax(options)
-        .done(options.done)
-        .fail(options.fail);
-    }
 
     $.prototype.collectInfo = function (userOpt) {
         var option = {
@@ -482,5 +486,4 @@
         return this;    //if you want use $bg to do something, you can use like this: $(form).popUp().parent()....
     };
 
-    //#endregion
 })(jQuery)
