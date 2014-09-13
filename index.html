@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
     <meta charset='utf-8'>
     <meta name="description" content="aUtils : aUtils">
 
     <title>aUtils File Upload</title>
-      <script src="./javascripts/vendor/jquery-1.11.0.js"></script>
-      <script src="./javascripts/scripts/aUtils.js"></script>
-      <script src="./javascripts/scripts/aUtils.File.js"></script>
+    <script src="./javascripts/vendor/jquery-1.11.0.js"></script>
+    <script src="./javascripts/scripts/aUtils.js"></script>
+    <script src="./javascripts/scripts/aUtils.File.js"></script>
     <style type="text/css">
-
     </style>
-  </head>
-    <div id="file" data-url="/upload.ashx" data-accept-mime-type="application/*"></div>
-  <script>
-      aUtils.File.initial($('#file')[0]);
-  </script>
-  <body>
-  </body>
+</head>
+<div id="file" data-accept-mime-type="image/*" data-test="true" data-test-image="http://www.baidu.com/favicon.ico" data-reset-btn="true"></div>
+<script>
+    aUtils.File.initial($('#file')[0], {
+        handleData:function(data){
+            console.log(data.msg);
+            return data.msg;
+        }
+    });
+</script>
+<body>
+</body>
 </html>

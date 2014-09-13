@@ -2,8 +2,10 @@
 /// <reference path="../Library/jquery-1.11.0.js" />
 
 (function () {
-    if (!window.aUtils) window.aUtils = function () { };
-    aUtils.File = function () { };
+    if (!window.aUtils) window.aUtils = function () {
+    };
+    aUtils.File = function () {
+    };
 
     aUtils.File.upload = function (fileInput, url) {
         if (!url) {
@@ -32,30 +34,43 @@
     aUtils.File.watch = function (fileInput, userOpt) {
         var defOpt = {
             event: 'change',
-            url: undefined
+            url: undefined,
+            test: false,
+            testImage: ''
         };
         $.extend(defOpt, userOpt, $(fileInput).data());
 
         $(fileInput).on(defOpt.event, function () {
-            var $input = $(this);
-            var promise = aUtils.File.upload($input[0], defOpt.url);
-            $input.trigger('upload.file.autils', promise);
 
-            if (promise) {
-                promise.success(function (data) {
-                    if (data && data.upload) {
-                        $input.trigger('complete.upload.file.autils', [data.msg, promise]);
-                    } else {
-                        $input.trigger('complete.upload.file.autils', [data, promise]);
-                    }
+            var $input = $(this);
+
+            if (defOpt.test) {
+                var deferred = $.Deferred();
+                var promise = deferred.promise();
+                $input.trigger('upload.file.autils', promise);
+                promise.done(function(data){
+                    $input.trigger('complete.upload.file.autils', [data, promise]);
                 });
-                promise.fail(function () {
-                    $input.trigger('fail.upload.file.autils', [promise]);
-                });
+                deferred.resolve({upload: true, msg: defOpt.testImage});
+
             } else {
-                $input.trigger('fail.upload.file.autils', ['no files']);
+                var promise = aUtils.File.upload($input[0], defOpt.url);
+                $input.trigger('upload.file.autils', promise);
+
+                if (promise) {
+                    promise.success(function (data) {
+                        $input.trigger('complete.upload.file.autils', [data, promise]);
+                    });
+                    promise.fail(function () {
+                        $input.trigger('fail.upload.file.autils', ['server fail', promise]);
+                    });
+                } else {
+                    $input.trigger('fail.upload.file.autils', ['no files']);
+                }
             }
         });
+
+
     };
 
     aUtils.File.initial = function (element, userOpt) {
@@ -69,7 +84,8 @@
             handleData: function (svrRetrunData) {
                 return svrRetrunData;
             },
-            complete: function (data, wrapper) { }
+            complete: function (data, wrapper) {
+            }
         };
         var $wrapper = $(element);
         $.extend(defOpt, userOpt, $wrapper.data());
@@ -85,10 +101,10 @@
 
                 if (defOpt.resetBtn) {
                     var $resetBtn = $('<button />')
-                                        .attr({
-                                            'class': defOpt.resetBtnClass
-                                        })
-                                        .text(defOpt.resetBtnText);
+                        .attr({
+                            'class': defOpt.resetBtnClass
+                        })
+                        .text(defOpt.resetBtnText);
                     $resetBtn.on('click', function () {
                         $wrapper.trigger('reset.file.autils');
                     });
