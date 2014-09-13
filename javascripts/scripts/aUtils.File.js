@@ -4,9 +4,12 @@
 (function () {
     if (!window.aUtils) window.aUtils = function () {
     };
-    aUtils.File = function () {
-    };
+    aUtils.File = function () {};
 
+    /*
+    * fileInput:    input[type=file] element
+    * url:          upload url
+    * */
     aUtils.File.upload = function (fileInput, url) {
         if (!url) {
             throw new Error('url error.');
@@ -31,6 +34,12 @@
         }
     };
 
+    /*
+    * event:        event type
+    * url:          upload url
+    * test:         test upload
+    * testImage:    test upload image url
+    * */
     aUtils.File.watch = function (fileInput, userOpt) {
         var defOpt = {
             event: 'change',
@@ -73,6 +82,14 @@
 
     };
 
+    /*
+    * imgClass:         uploade image class
+    * inputClass:       input[type=file] class
+    * acceptMimeType:   input can accepted mime type
+    * resetBtn:         show reset button when uploaded
+    * resetBtnClass:    reset button class
+    * resetBtnText:     reset button text
+    * */
     aUtils.File.initial = function (element, userOpt) {
         var defOpt = {
             imgClass: 'mask',
