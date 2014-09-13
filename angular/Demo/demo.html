@@ -3,12 +3,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="../../styles/bootstrap.css"/>
     <script src="../../javascripts/vendor/angular-1.2.15/angular.js"></script>
+    <script src="../../javascripts/vendor/angular-1.2.15/angular-route.min.js"></script>
     <script src="./scripts/app.js"></script>
+    <script src="./scripts/routes.js"></script>
 </head>
 <body ng-app="myApp">
-    <div ng-controller="UserCtrl">
-        {{user.name}}
-    </div>
+<div ng-view></div>
 </body>
 </html>
