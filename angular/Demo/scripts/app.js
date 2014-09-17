@@ -12,18 +12,19 @@ app.controller('HomeCtrl', function ($scope, UserSvc) {
     $scope.title = "cool";
     $scope.user = UserSvc;
 });
-app.controller('LoginCtrl', function($scope, UserSvc){
+app.controller('LoginCtrl', function($scope, UserSvc, $location){
     $scope.user = {email:'', password:''};
     $scope.login = function(){
         UserSvc.email = $scope.user.email;
+        $location.path('/');
     };
 });
 app.controller('NavCtrl', function($scope){
     $scope.navs = [
         {url:'#/', name:'Home'},
-        {url:'#/Login', name:'Log In'},
-        {url:'#/Register', name:'Register'},
-        {url:'#/Profile', name:'Profile'}
+        {url:'#/login', name:'Log In'},
+        {url:'#/register', name:'Register'},
+        {url:'#/profile', name:'Profile'}
     ];
 });
 app.controller('FooterCtrl', function($scope){
