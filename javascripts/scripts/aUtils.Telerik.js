@@ -3,7 +3,7 @@
 
 
 (function($) {
-    if (!window.aUtils) window.aUtils = function() {};
+    if (!window.aUtils) window.aUtils = {};
 
     aUtils.RadGridClient = function(arg1) {
         this.clientId = '';

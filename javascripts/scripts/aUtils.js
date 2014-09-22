@@ -7,7 +7,7 @@
 
 
 (function () {
-    if (!window.aUtils) window.aUtils = function () { };
+    if (!window.aUtils) window.aUtils ={ };
 
     aUtils.queryHeader = function (headers, key) {
         var reg = new RegExp(key + ': (.+)', 'i');

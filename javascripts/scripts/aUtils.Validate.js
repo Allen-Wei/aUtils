@@ -1,7 +1,7 @@
 ﻿
 
 (function ($) {
-    if (!window.aUtils) window.aUtils = function () { };
+    if (!window.aUtils) window.aUtils ={ };
     aUtils.jQuery = function () { }
 
     $.fn.validThis = function (form) {

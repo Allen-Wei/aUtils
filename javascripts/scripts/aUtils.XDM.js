@@ -1,6 +1,6 @@
 ﻿
 (function($) {
-    if (!window.aUtils) window.aUtils = function() {};
+    if (!window.aUtils) window.aUtils = {};
     aUtils.XDM = function(targetDoc) {
         this.targetDoc = targetDoc;
 
