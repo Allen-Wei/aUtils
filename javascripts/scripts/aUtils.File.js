@@ -8,7 +8,6 @@
 
 
 (function () {
-    if (!window.aUtils) window.aUtils ={};
     window.aUtils = window.aUtils || {};
     aUtils.File = function () {};
 

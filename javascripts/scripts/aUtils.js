@@ -40,6 +40,23 @@
         return version1();
     };
 
+
+    String.format = function () {
+        //String.format('name:{0}, age:{1}', 'alan', 'hehe')
+        if (arguments.length == 0) return 'Are you kidding me?';
+        if (arguments.length == 1) return arguments[0];
+        var string = arguments[0];
+        if (arguments.length >= 2) {
+            var reg = /{(\d)}/g;
+            var matched = string.match(reg);
+            for (var i = 0; i < matched.length; i++) {
+                var singleMatch = matched[i];
+                var index = parseInt(singleMatch.substring(1, singleMatch.length - 1));
+                string = string.replace(singleMatch, arguments[index + 1]);
+            }
+            return string;
+        }
+    }
 })();
 
 

@@ -380,7 +380,7 @@
         var $bg = $('<div>');                           //curtain
 
         //store position
-        var $position = $(String.format('<div style="display: none;" id="{0}"></div>', $.random('id')));
+        var $position = $(String.format('<div style="display: none;" id="{0}"></div>', 'id' + aUtils.guid()));
         $thisContent.before($position);
 
         //store original css
