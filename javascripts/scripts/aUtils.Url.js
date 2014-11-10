@@ -28,12 +28,13 @@
         }
         return retParas;
     };
-    aUtils.Url.query = function (key, url) {
+    aUtils.Url.query = function(key, url) {
         var params = aUtils.Url.getAll(url);
         return params[key];
-    }
-    aUtils.Url.path = function (index) {
-        var urls = location.href
+    };
+    aUtils.Url.path = function (index, inUrl) {
+        var href = inUrl || location.href;
+        var urls = href
             .replace('http://' + location.host, '')
             .replace(location.search, '')
             .replace(location.hash, '')
