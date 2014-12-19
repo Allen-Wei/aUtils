@@ -57,6 +57,13 @@
             return string;
         }
     }
+
+    /*http://stackoverflow.com/questions/563406/add-days-to-datetime*/
+    aUtils.addDays = function (date, days) {
+        var result = new Date(date);
+        result.setDate(date.getDate() + days);
+        return result;
+    }
 })();
 
 

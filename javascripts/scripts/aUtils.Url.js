@@ -36,6 +36,7 @@
         var href = inUrl || location.href;
         var urls = href
             .replace('http://' + location.host, '')
+            .replace('https://' + location.host, '')
             .replace(location.search, '')
             .replace(location.hash, '')
             .split('/');
