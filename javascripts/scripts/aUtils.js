@@ -56,14 +56,24 @@
             }
             return string;
         }
-    }
+    };
 
     /*http://stackoverflow.com/questions/563406/add-days-to-datetime*/
     aUtils.addDays = function (date, days) {
         var result = new Date(date);
         result.setDate(date.getDate() + days);
         return result;
-    }
+    };
+
+	aUtils.getValueBySafe = function(obj){
+		if(!obj){ return obj; };
+		var value = obj;
+		for(var i = 1; i < arguments.length; i++){
+			var propertyName = arguments[i];
+			value = value[propertyName] || {};
+		}
+		return value;
+	};
 })();
 
 
