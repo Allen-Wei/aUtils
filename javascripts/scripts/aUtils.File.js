@@ -6,18 +6,13 @@
 * Last Update: 2014-09-13
 * */
 
-
 (function () {
-    window.aUtils = window.aUtils || {};
-    aUtils.File = function () {};
+    if (!window.aUtils) window.aUtils = function () { };
+    aUtils.File = function () { };
 
-    /*
-    * fileInput:    input[type=file] element
-    * url:          upload url
-    * */
     aUtils.File.upload = function (fileInput, url) {
         if (!url) {
-            throw new Error('url error.');
+            throw new Error('url error at aUtils.File.upload().');
         }
         if (fileInput.files.length) {
             var data = new FormData();
@@ -39,63 +34,31 @@
         }
     };
 
-    /*
-    * event:        event type
-    * url:          upload url
-    * test:         test upload
-    * testImage:    test upload image url
-    * */
     aUtils.File.watch = function (fileInput, userOpt) {
         var defOpt = {
             event: 'change',
-            url: undefined,
-            test: false,
-            testImage: ''
+            url: undefined
         };
         $.extend(defOpt, userOpt, $(fileInput).data());
 
         $(fileInput).on(defOpt.event, function () {
-
             var $input = $(this);
+            var promise = aUtils.File.upload($input[0], defOpt.url);
+            $input.trigger('upload.file.autils', promise);
 
-            if (defOpt.test) {
-                var deferred = $.Deferred();
-                var promise = deferred.promise();
-                //Note Trigger Event upload.file.autils
-                $input.trigger('upload.file.autils', promise);
-                promise.done(function(data){
-                    $input.trigger('complete.upload.file.autils', [data, promise]);
+            if (promise) {
+                promise.success(function (data) {
+                    $input.trigger('complete.upload.file.autils', [data]);
                 });
-                deferred.resolve({upload: true, msg: defOpt.testImage});
-
+                promise.fail(function () {
+                    $input.trigger('fail.upload.file.autils', [promise]);
+                });
             } else {
-                var promise = aUtils.File.upload($input[0], defOpt.url);
-                $input.trigger('upload.file.autils', promise);
-
-                if (promise) {
-                    promise.success(function (data) {
-                        $input.trigger('complete.upload.file.autils', [data, promise]);
-                    });
-                    promise.fail(function () {
-                        $input.trigger('fail.upload.file.autils', ['server fail', promise]);
-                    });
-                } else {
-                    $input.trigger('fail.upload.file.autils', ['no files']);
-                }
+                $input.trigger('fail.upload.file.autils', ['no files']);
             }
         });
-
-
     };
 
-    /*
-    * imgClass:         uploade image class
-    * inputClass:       input[type=file] class
-    * acceptMimeType:   input can accepted mime type
-    * resetBtn:         show reset button when uploaded
-    * resetBtnClass:    reset button class
-    * resetBtnText:     reset button text
-    * */
     aUtils.File.initial = function (element, userOpt) {
         var defOpt = {
             imgClass: 'mask',
@@ -104,18 +67,20 @@
             resetBtn: false,
             resetBtnClass: 'reset',
             resetBtnText: 'Reset',
-            handleData: function (svrRetrunData) {
+            getImageUrl: function (svrRetrunData) {
                 return svrRetrunData;
             },
-            complete: function (data, wrapper) {
-            }
+            complete: function (data, wrapper) { }
         };
+        if (!element) {
+            throw 'error html element at aUtils.File.initial().';
+        }
         var $wrapper = $(element);
         $.extend(defOpt, userOpt, $wrapper.data());
 
         //image upload complete
         $wrapper.on('complete.file.autils', function (e, data) {
-            var imgSrc = defOpt.handleData(data);
+            var imgSrc = defOpt.getImageUrl(data);
             if (imgSrc) {
                 //replace input with image
                 var $input = $wrapper.find('input.' + defOpt.inputClass);
@@ -124,10 +89,10 @@
 
                 if (defOpt.resetBtn) {
                     var $resetBtn = $('<button />')
-                        .attr({
-                            'class': defOpt.resetBtnClass
-                        })
-                        .text(defOpt.resetBtnText);
+                                        .attr({
+                                            'class': defOpt.resetBtnClass
+                                        })
+                                        .text(defOpt.resetBtnText);
                     $resetBtn.on('click', function () {
                         $wrapper.trigger('reset.file.autils');
                     });
@@ -165,4 +130,3 @@
         $wrapper.trigger('reset.file.autils');
     }
 })();
-
