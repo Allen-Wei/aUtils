@@ -1,10 +1,16 @@
-﻿///require aUtils.js
-///require jquery.js
+﻿///require jquery.js
 /*
-* Author: Alan
-* Start Date: 2014-09-13
-* Last Update: 2015-03-16
-* */
+ * Author: Alan
+ * Start Date: 2014-09-13
+ * Last Update: 2015-03-16
+
+ * events:
+ * upload.autils            => Start uploading file
+ * complete.upload.autils   => Upload file completed
+ * fail.upload.autils       => Upload file failed
+ * reset.upload.autils      => Reset
+ * */
+
 
 (function () {
     if (!window.aUtils) window.aUtils = function () { };
@@ -34,29 +40,44 @@
         }
     };
 
+
     aUtils.File.watch = function (fileInput, userOpt) {
         var defOpt = {
             event: 'change',
-            url: undefined
+            uploadUrl: undefined
         };
         $.extend(defOpt, userOpt, $(fileInput).data());
 
         $(fileInput).on(defOpt.event, function () {
             var $input = $(this);
-            var promise = aUtils.File.upload($input[0], defOpt.url);
-            $input.trigger('upload.file.autils', promise);
+
+            var promise = undefined;
+            if (defOpt.test) {
+                var deferred = $.Deferred();
+                promise = deferred.promise();
+                var images = defOpt.testImages;
+                if (!$.isArray(images)) {
+                    images = images.split(',');
+                }
+                deferred.resolve(images);
+
+            } else {
+                promise = aUtils.File.upload($input[0], defOpt.uploadUrl);
+            }
+
+            $input.trigger('upload.autils', promise);
 
             if (promise) {
-                promise.success(function (data) {
-                    $input.trigger('complete.upload.file.autils', [data]);
-                });
-                promise.fail(function () {
-                    $input.trigger('fail.upload.file.autils', [promise]);
+                promise.then(function (data) {
+                    $input.trigger('complete.upload.autils', [data]);
+                }, function() {
+                    $input.trigger('fail.upload.autils', [promise]);
                 });
             } else {
-                $input.trigger('fail.upload.file.autils', ['no files']);
+                $input.trigger('fail.upload.autils', ['no files']);
             }
         });
+
     };
 
     aUtils.File.initial = function (element, userOpt) {
@@ -64,13 +85,20 @@
             imgClass: 'mask',
             inputClass: 'mask',
             acceptMimeType: 'image/*',
+            multiple: true,
+            uploadUrl: '',
+
             resetBtn: false,
             resetBtnClass: 'reset',
             resetBtnText: 'Reset',
-            multiple:true,
-            getImageUrl: function (svrRetrunData) {
+
+            test: false,
+            testImages: [],
+
+            getImages: function (svrRetrunData, options) {
                 return svrRetrunData;
             },
+
             complete: function (data, wrapper) { }
         };
         if (!element) {
@@ -80,55 +108,52 @@
         $.extend(defOpt, userOpt, $wrapper.data());
 
         //image upload complete
-        $wrapper.on('complete.file.autils', function (e, data) {
-            var imgSrc = defOpt.getImageUrl(data);
-            if (imgSrc) {
+        $wrapper.on('complete.upload.autils', function (e, data) {
+
+            var images = defOpt.getImages(data, defOpt);
+            if (images) {
                 //replace input with image
-                var $input = $wrapper.find('input.' + defOpt.inputClass);
-                var $img = $('<img />').attr('src', imgSrc).addClass(defOpt.imgClass);
-                $input.replaceWith($img);
+                $wrapper.find('input.' + defOpt.inputClass).remove();
+                $(images).find('img').addClass(defOpt.imgClass);
+                $wrapper.append($(images));
 
                 if (defOpt.resetBtn) {
                     var $resetBtn = $('<button />')
-                                        .attr({
-                                            'class': defOpt.resetBtnClass
-                                        })
-                                        .text(defOpt.resetBtnText);
+                        .attr({
+                            'class': defOpt.resetBtnClass
+                        })
+                        .text(defOpt.resetBtnText);
                     $resetBtn.on('click', function () {
-                        $wrapper.trigger('reset.file.autils');
+                        $wrapper.trigger('reset.upload.autils');
                     });
                     $wrapper.append($resetBtn);
                 }
+            } else {
+                throw 'error images source.';
             }
             defOpt.complete(data, $wrapper);
-            $wrapper.trigger('completed.file.autils', [data]);
 
+            $wrapper.trigger('done.file.autils', [data]);
         });
 
         //reset component
-        $wrapper.on('reset.file.autils', function () {
+        $wrapper.on('reset.upload.autils', function () {
             //clear elements
-            $wrapper.find('img.' + defOpt.imgClass.split(' ')[0]).remove();
-            $wrapper.find('input.' + defOpt.inputClass.split(' ')[0]).remove();
-            $wrapper.find('button.' + defOpt.resetBtnClass.split(' ')[0]).remove();
+            $wrapper.empty();
 
             //create input[type=file]
             var $input = $('<input type="file" />')
                 .attr({
                     'class': defOpt.inputClass,
                     'accept': defOpt.acceptMimeType,
-                    multiple:defOpt.multiple
+                    'multiple': defOpt.multiple
                 });
             $input.data(defOpt);        //transfer parameter
             $wrapper.append($input);    //append input
             aUtils.File.watch($input[0]);
-
-            $input.on('complete.upload.file.autils', function (e, data) {
-                $wrapper.trigger('complete.file.autils', [data]);
-            });
-
         });
 
-        $wrapper.trigger('reset.file.autils');
+        $wrapper.trigger('reset.upload.autils');
     }
+
 })();
