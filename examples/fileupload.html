@@ -50,5 +50,21 @@
         }
     });
 </script>
+
+<div>
+    <pre>
+        var filePath = new List<string>();
+        if (Request.Files.Count >= 1)
+        {
+            for (var index = 0; index < Request.Files.Count; index++)
+            {
+                var file = Request.Files[index];
+                filePath.Add(String.Format("/Content/{0}{1}", Guid.NewGuid(), System.IO.Path.GetExtension(file.FileName)));
+                file.SaveAs(Server.MapPath(filePath.Last()));
+            }
+        }
+        return filePath;
+    </pre>
+</div>
 </body>
 </html>
