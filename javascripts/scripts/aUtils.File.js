@@ -1,4 +1,5 @@
-﻿///require jquery.js
+﻿///require aUtils.js
+///require jquery.js
 /*
  * Author: Alan
  * Start Date: 2014-09-13
@@ -70,7 +71,7 @@
             if (promise) {
                 promise.then(function (data) {
                     $input.trigger('complete.upload.autils', [data]);
-                }, function() {
+                }, function () {
                     $input.trigger('fail.upload.autils', [promise]);
                 });
             } else {
@@ -151,9 +152,14 @@
             $input.data(defOpt);        //transfer parameter
             $wrapper.append($input);    //append input
             aUtils.File.watch($input[0]);
+
+            $wrapper.trigger('reseted.upload.autils');
+
         });
 
         $wrapper.trigger('reset.upload.autils');
+
+        return $wrapper;
     }
 
 })();
