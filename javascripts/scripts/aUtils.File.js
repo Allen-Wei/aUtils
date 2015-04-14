@@ -67,6 +67,7 @@
             resetBtn: false,
             resetBtnClass: 'reset',
             resetBtnText: 'Reset',
+            multiple:true,
             getImageUrl: function (svrRetrunData) {
                 return svrRetrunData;
             },
@@ -115,7 +116,8 @@
             var $input = $('<input type="file" />')
                 .attr({
                     'class': defOpt.inputClass,
-                    'accept': defOpt.acceptMimeType
+                    'accept': defOpt.acceptMimeType,
+                    multiple:defOpt.multiple
                 });
             $input.data(defOpt);        //transfer parameter
             $wrapper.append($input);    //append input
