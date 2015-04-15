@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c156c4b8-c1c8-44fb-98f2-ee0e36b101a9" name="Default" comment="add aUtils.addDays function">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/javascripts/scripts/aUtils.File.Implementaion.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/javascripts/scripts/aUtils.File.js" afterPath="$PROJECT_DIR$/javascripts/scripts/aUtils.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="c156c4b8-c1c8-44fb-98f2-ee0e36b101a9" name="Default" comment="add aUtils.addDays function" />
     <ignored path="aUtils.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
