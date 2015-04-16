@@ -198,7 +198,7 @@
             }
             uploadFiles = temporaryFiles;
         }).on('click', option.allBtn, function () {
-            var promise = aUtils.File.uploadFiles(uploadFiles, option.url);
+            var promise = aUtils.File.uploadCore(uploadFiles, option.url);
             $(this).trigger('allupload.upload', [promise, uploadFiles, option]);
         }).on('click', option.eachBtn, function () {
 
