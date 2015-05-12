@@ -167,7 +167,6 @@
             for (var i = 0; i < this.files.length; i++) {
                 uploadFiles.push(this.files[i]);
             }
-            console.log(uploadFiles);
             $(option.fileGroup).empty().append(option.generateFileList(uploadFiles));
 
         }).on('removefile.files', function (e, fileIds) {
