@@ -2,6 +2,7 @@
  * Created by lenovo on 2015/4/15.
  * Author Alan Way
  * Email alan.wei@live.com
+ * Last Update 2015-05-20 14:08:38
  */
 
 
@@ -50,7 +51,7 @@
 
     };
 
-    aUtils.File.immediatelyUpload= function (element, userOpt) {
+    aUtils.File.immediatelyUpload = function (element, userOpt) {
         var defOpt = {
             imgClass: 'mask',
             inputClass: 'mask',
@@ -132,83 +133,115 @@
     };
 
 
-
-
-
-
     //Upload all images or iterator upload
     $.fn.aUtilsUpload = function (customerOption) {
         var $container = $(this);
         var option = {
             url: undefined,
             fileInput: 'input[type=file]',
-            eachBtn: '.upload-each',
-            allBtn: '.upload-all',
             fileGroup: '.upload-files',
 
             generateFileList: function (files) {
-                var $group = $('<ul />').addClass('list-group');
+                var groupList = [];
                 for (var i = 0; i < files.length; i++) {
-                    var $file = $('<li />').addClass('list-group-item').append($('<span />').text(files[i].name));
-                    $file.append($('<i />').addClass('btn btn-default btn-xs fa fa-remove pull-right').text('')).data('index', i);
-                    $group.append($file);
+                    var $file = $('<li />')
+                        .addClass('list-group-item')
+                        .data({ 'index': i, fileName: files[i].name })
+                        .attr('title', files[i].name);
+
+                    var $removeIcon = $('<i />').addClass('btn btn-danger btn-xs fa fa-remove');
+                    $file.append($removeIcon);
+
+                    (function (file, $ele) {
+                        var reader = new FileReader();
+                        var img = document.createElement('img');
+                        img.title = file.name;
+                        reader.readAsDataURL(file);
+                        reader.onloadend = function () {
+                            img.src = reader.result;
+                        };
+                        $ele.append(img);
+                    })(files[i], $file);
+
+                    groupList.push($file);
                 }
-                return $group;
+                return groupList;
             }
         };
         $.extend(option, customerOption, $container.data());
 
-        if(!option.url){throw 'Error option.url';}
-        
-        var uploadFiles = [];
+        if (!option.url) { throw 'Error option.url'; }
 
-        $container.on('change', option.fileInput, function () {
-            uploadFiles = [];
-            for (var i = 0; i < this.files.length; i++) {
-                uploadFiles.push(this.files[i]);
-            }
-            $(option.fileGroup).empty().append(option.generateFileList(uploadFiles));
-
-        }).on('removefile.files', function (e, fileIds) {
-            if (!fileIds || !$.isArray(fileIds)) {
-                throw 'Error parameter at listen removefile.files event.';
-            }
-            var willRemovedIndex = [];
-            for (var i = 0; i < uploadFiles.length; i++) {
-                for (var j = 0; j < fileIds.length; j++) {
-                    var id = fileIds[j];
-                    var match = false;
-                    if ($.isNumeric(id)) {
-                        if (i === id) { match = true; }
-                    } else {
-                        if (uploadFiles[i].name === id) { match = true; }
-
-                    }
-                    if (match) {
-                        willRemovedIndex.push(i);
+        var exportModule = {
+            _files: [],
+            getFiles: function () {
+                return this._files;
+            },
+            addFile: function (f) {
+                this._files.push(f);
+                return this;
+            },
+            removeFile: function (fileName) {
+                for (var i = 0; i < this._files.length; i++) {
+                    if (this._files[i].name === fileName) {
+                        this._files.splice(i, 1);
                     }
                 }
-            }
-            var temporaryFiles = [];
-            for (i = 0; i < uploadFiles.length; i++) {
-                if (willRemovedIndex.indexOf(i) === -1) {
-                    temporaryFiles.push(uploadFiles[i]);
+                return this;
+            },
+            removeFiles: function (fileNames) {
+                fileNames = fileNames || [];
+                for (var i = 0; i < fileNames.length; i++) {
+                    this.removeFile(fileNames[i]);
                 }
+                return this;
+            },
+            removeAll: function () {
+                this._files = [];
+            },
+            eachUpload: function (callback) {
+                var files = this.getFiles();
+                for (var i = 0; i < files.length; i++) {
+                    var promise = aUtils.File.uploadCore([files[i]], option.url);
+                    callback(promise, i, files, option);
+                }
+            },
+            allUpload: function (callback) {
+                var files = this.getFiles();
+                var promise = aUtils.File.uploadCore(files, option.url);
+                callback(promise, files, option);
             }
-            uploadFiles = temporaryFiles;
-        }).on('click', option.allBtn, function () {
-            var promise = aUtils.File.uploadCore(uploadFiles, option.url);
-            $(this).trigger('allupload.upload', [promise, uploadFiles, option]);
-        }).on('click', option.eachBtn, function () {
+        };
+        this.aUtilsExport = exportModule;
 
-            for (var i = 0; i < uploadFiles.length; i++) {
-                var promise = aUtils.File.uploadCore([uploadFiles[i]], option.url);
-                $(this).trigger('eachupload.upload', [promise, i, uploadFiles, option]);
-            }
 
-        });
+        $container
+            .on('change', option.fileInput, function () {
+                exportModule.removeAll();
+                for (var i = 0; i < this.files.length; i++) {
+                    exportModule.addFile(this.files[i]);
+                }
+                $(option.fileGroup).empty().append(option.generateFileList(exportModule.getFiles()));
+            })
+            //移除文件
+            .on('removefile.files', function (e, fileIds) {
+                exportModule.removeFiles(fileIds);
+            })
+            //上传所有文件
+            .on('uploadall.files', function () {
+                exportModule.allUpload(function () {
+                    $container.trigger('all.upload', arguments);
+                });
+            })
+            //单独上传
+            .on('uploadeach.files', function () {
+                exportModule.eachUpload(function () {
+                    $container.trigger('each.upload', arguments);
+                });
+            });
 
         return this;
 
     };
 })();
+
