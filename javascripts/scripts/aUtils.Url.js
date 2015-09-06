@@ -6,57 +6,80 @@
 (function () {
     if (!window.aUtils) window.aUtils = {};
 
-    aUtils.Url = {};
-    aUtils.Url.getAll = function (url) {
-        var search = location.search.replace('?', '');
-        if (url) {
-            search = url.split('?')[1];
-        }
-        if (!search) {
-            console.log('cannot find search parameter.');
-            return {};
-        }
+    aUtils.Url = {
+		  info: function (url) {
 
-        var paras = search.split('&');
-        var retParas = {};
-        for (var i = 0; i < paras.length; i++) {
-            var para = paras[i];
-            var keyValues = para.split('=');
-            var key = keyValues[0];
-            var value = decodeURI(keyValues[1]);
-            retParas[key] = value;
-        }
-        return retParas;
-    };
-    aUtils.Url.query = function(key, url) {
-        var params = aUtils.Url.getAll(url);
-        return params[key];
-    };
-    aUtils.Url.path = function (index, inUrl) {
-        var href = inUrl || location.href;
-        var urls = href
-            .replace('http://' + location.host, '')
-            .replace('https://' + location.host, '')
-            .replace(location.search, '')
-            .replace(location.hash, '')
-            .split('/');
+            var href = url || location.href;
 
-        var array = [];
-        for (var i = 0; i < urls.length; i++) {
-            var url = urls[i];
-            if (url) {
-                array.push(url);
+            var result = {
+                host: location.host,
+                hash: location.hash.replace("#", ""),
+                paths: [],
+                absoluteUrl: "",
+                hashValue: "",
+                searchString: "",
+                searchStrings: "",
+                params: {}
+            };
+            var httpRegex = new RegExp("^http(s)?://");
+            href = href.replace(httpRegex, "");   //去除协议
+            var hostEndIndex = href.indexOf("/");
+            if (hostEndIndex >= 0) {
+                result.host = href.substr(0, hostEndIndex);
+            } else {
+                result.host = href;
+                return result;
             }
+
+            var hostRegex = new RegExp("^" + result.host + "/");
+            var noHostAddress = href.replace(hostRegex, "");
+
+            //absolute URL
+            var questionMaskPosition = noHostAddress.indexOf("?");  //问号的位置
+            if (questionMaskPosition >= 0) {
+                result.absoluteUrl = noHostAddress.substr(0, questionMaskPosition);
+            }
+            result.paths = result.absoluteUrl.split("/");
+
+            //Hash
+            var hashPosition = noHostAddress.indexOf("#");
+            if (hashPosition >= 0) {
+                result.hashValue = noHostAddress.substr(hashPosition + 1, noHostAddress.length - 1);
+            }
+
+            //search
+            if (questionMaskPosition >= 0) {
+                result.searchString = noHostAddress.substring(questionMaskPosition + 1, hashPosition === -1 ? noHostAddress.length - 1 : hashPosition);
+            }
+            result.searchStrings = result.searchString.split("&");
+            for (var i = 0; i < result.searchStrings.length; i++) {
+                var keyValue = result.searchStrings[i].split("=");
+                result.params[keyValue[0].toLowerCase()] = decodeURIComponent(keyValue[1]);
+            }
+
+            return result;
+        },
+        getAll: function (url) {
+            return this.info(url).params;
+        },
+        query: function (key, url) {
+            key = (key || "").toLowerCase();
+            var params = this.getAll(url);
+            return params[key];
+        },
+        path: function (index, inUrl) {
+            var array = this.info(inUrl).paths;
+
+            if (index === 0 || index) {
+                if (index >= 0) {
+                    return array[index];
+                }
+                if (index < 0) {
+                    return array[array.length + index];
+                }
+                throw new Error("index is error");
+            }
+            return array;
         }
-        if (index === 0 || index) {
-            if (index >= 0) {
-                return array[index];
-            }
-            if (index < 0) {
-                return array[array.length + index];
-            }
-            throw new Error('index is error');
-        }
-        return array;
-    };
+	};
 })();
