@@ -1,5 +1,7 @@
 /**
- * Created by Alan on 9/22/2014.
+ * Author: Alan
+ * Created: 9/22/2014.
+ * Lastest update: 2015-09-06 15:46:36
  */
 
 
@@ -49,7 +51,7 @@
 
             //search
             if (questionMaskPosition >= 0) {
-                result.searchString = noHostAddress.substring(questionMaskPosition + 1, hashPosition === -1 ? noHostAddress.length - 1 : hashPosition);
+                result.searchString = noHostAddress.substring(questionMaskPosition + 1, hashPosition === -1 ? noHostAddress.length : hashPosition);
             }
             result.searchStrings = result.searchString.split("&");
             for (var i = 0; i < result.searchStrings.length; i++) {
