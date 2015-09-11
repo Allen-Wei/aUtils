@@ -10,6 +10,7 @@
  * complete.upload.autils   => Upload file completed
  * fail.upload.autils       => Upload file failed
  * reset.upload.autils      => Reset
+ * 
  * */
 
 
@@ -61,6 +62,5 @@
             return false;
         }
     };
-
 
 })();
