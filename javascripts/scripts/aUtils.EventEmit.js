@@ -2,6 +2,7 @@
  * Author: Alan Wei
  * Email: Alan.Wei@live.com
  * 
+ * Support IE6+
  * Create: 2015-09-11 18:32:32
  * Update: 2015-09-11 18:32:39
 */
