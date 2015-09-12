@@ -29,7 +29,7 @@
             return this.indexOf(ele) !== -1;
         };
 
-        //模型
+        //模型(数据双向绑定实现部分)
         var Model = function (modelId) {
             var binderName = "bind-" + modelId,  //绑定的名字 bind-modelId
                 binderFullName = "data-" + binderName,  //元素上的属性名 data-bind-modelId
@@ -88,8 +88,14 @@
         };
 
 
+		//代码执行部分
         var model = new Model("abc");
         model.set("company", "google");
     </script>
+
+	<p>
+		<a href="https://github.com/Allen-Wei/aUtils">Github</a> | 
+		<a href="https://github.com/Allen-Wei/aUtils/blob/gh-pages/javascripts/scripts/aUtils.EventEmit.js">EventEmit.js</a>
+	</p>
 </body>
 </html>
