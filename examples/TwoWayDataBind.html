@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Two Way Databind</title>
+    <meta charset="utf-8" />
+    <script src="../Scripts/aUtils.EventEmit.js"></script>
+</head>
+<body>
+    <div>
+        <label>Company: </label>
+        <input type="text" value="" data-bind-abc="company" />
+    </div>
+    <div>
+        <label>Span(Company): </label>
+        <span data-bind-abc="company"></span>
+    </div>
+    <div>
+        <label>Select(Company): </label>
+        <select data-bind-abc="company">
+            <option value="microsoft">Microsoft</option>
+            <option value="apple">Apple</option>
+            <option value="google">Google</option>
+        </select>
+    </div>
+
+    <script>
+        //原型扩展数组方法, 返回数组是否包含某个元素
+        Array.prototype.contains = function (ele) {
+            return this.indexOf(ele) !== -1;
+        };
+
+        //模型
+        var Model = function (modelId) {
+            var binderName = "bind-" + modelId,  //绑定的名字 bind-modelId
+                binderFullName = "data-" + binderName,  //元素上的属性名 data-bind-modelId
+                valueChangeEvtName = binderName + "-setValue";  //model值改变时触发的事件名称
+
+
+            var _model = {
+                //存储模型的数据
+                data: {},
+                //获取模型的某个值
+                get: function (attrName) {
+                    return this.data[attrName]
+                },
+                //设置模型的值
+                set: function (attrName, newValue, trigger) {
+                    this.data[attrName] = newValue;
+                    if (trigger !== false) { aUtils.EventEmit.emit(valueChangeEvtName, _model, attrName, newValue); }
+                }
+            };
+
+            //监听所有的 data-bind-modelId 元素的change事件
+            document.querySelector("body").addEventListener("change", function (e) {
+                var target = e.target;
+                var attribute = target.attributes[binderFullName];
+                if (attribute) {
+                    var newValue = target.value;
+                    aUtils.EventEmit.emit(valueChangeEvtName, target, attribute.value, newValue);
+                }
+            });
+
+
+            //监听 模型值改变 事件
+            aUtils.EventEmit.on(valueChangeEvtName, function (attrName, newValue) {
+
+                if (this === model) {
+                    //_model.set() 触发
+                    var selector = '[' + binderFullName + '="' + attrName + '"]';
+                    var elements = document.querySelectorAll(selector);
+                    Array.prototype.forEach.call(elements, function (ele) {
+                        if (["textarea", "input", "select"].contains(ele.tagName.toLowerCase())) {
+                            ele.value = newValue;
+                        } else {
+                            ele.innerHTML = newValue;
+                        }
+                    });
+                } else if (this.tagName) {
+                    //body:change 触发
+                    _model.set(attrName, newValue);
+                } else {
+                    throw "事件 this 对象无效.";
+                }
+
+            });
+
+            return _model;
+        };
+
+
+        var model = new Model("abc");
+        model.set("company", "google");
+    </script>
+</body>
+</html>
