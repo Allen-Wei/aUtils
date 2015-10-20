@@ -2,7 +2,7 @@
 /*
  * Author: Alan
  * Start Date: 2014-09-13
- * Last Update: 2014-09-13
+ * Last Update: 2015-10-20
  * */
 
 
@@ -74,15 +74,23 @@
 		}
 		return value;
 	};
+
+	/*2015-10-20 14:59:38*/
+	String.prototype.templ = function (json) {
+        var args = arguments;
+        var paras = Array.prototype.splice.call(args, 1, args.length - 1);
+
+        var fnReg = /\{\{([\w\s\+\.\(\)'\-";]+)\}\}/g;
+        var fnText = this.replace(fnReg, function(g0, g1) {
+          var innerFunction =  new Function(g1);
+          return innerFunction.apply(json, paras);
+        });
+
+        var placeHoldReg= /\{(\w+|\d*|_*)\}/g;
+        return fnText.replace(placeHoldReg, function (g0, g1) {
+            var value = json[g1];
+            return typeof (value) === "function" ? value.apply(json, paras) : value;
+        });
+    };
 })();
-
-
-
-/*
-Example:
-
-(function () {
-    if (!window.aUtils) window.aUtils = function () { };
-})();
-*/
 
