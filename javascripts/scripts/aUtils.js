@@ -75,7 +75,13 @@
 		return value;
 	};
 
-	/*2015-10-20 14:59:38*/
+	/*
+	 * 2015-10-20 14:59:38
+	 * format string
+	 * use:
+	 * "Hello {fn}. My full name is {my}.".templ({fn:"Alan", ln:"Wei", my:function(){return this.fn + " " + this.ln;}}); 
+	 * "Hello Alan. My full name is Alan Wei."
+	 * */
 	String.prototype.templ = function (json) {
         var args = arguments;
         var paras = Array.prototype.splice.call(args, 1, args.length - 1);
@@ -92,5 +98,23 @@
             return typeof (value) === "function" ? value.apply(json, paras) : value;
         });
     };
+
+	/*
+	 * 2015-10-28 11:06:01
+	 * Html Encode/Decode
+	 * references: http://stackoverflow.com/questions/1219860/html-encoding-in-javascript-jquery
+	 * */
+	String.htmlEncode = function(html){
+		var element = document.createElement("div");
+		var text = document.createTextNode(html);
+		element.appendChild(text);
+		return element.innerHTML;
+	};
+	
+	String.htmlDecode = function(encodedHtml){
+        var element = document.createElement("div");
+        element.innerHTML = encodedHtml;
+        return element.innerText;
+	};
 })();
 
