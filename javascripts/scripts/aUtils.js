@@ -2,7 +2,7 @@
 /*
  * Author: Alan
  * Start Date: 2014-09-13
- * Last Update: 2015-10-28
+ * Last Update: 2015-10-30 15:14:46
  * */
 
 
@@ -116,5 +116,11 @@
         element.innerHTML = encodedHtml;
         return element.innerText;
 	};
+	
+    String.getText = function(html) {
+        var element = document.createElement("div");
+        element.innerHTML = html;
+        return element.innerText;
+    };
 })();
 
