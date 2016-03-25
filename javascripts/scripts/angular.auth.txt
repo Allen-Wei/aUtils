@@ -1,0 +1,140 @@
+/// <reference path="../_config.js" />
+/// <reference path="../../vendor/angularjs/angular.js" />
+/// <reference path="../../vendor/angularjs/angular-route.js" />
+
+/*
+ * auth.register("anonymouce", function(){return user!==undefined;});
+ * auth.register("admin", function(){ return user.type === "admin" });
+ * auth.register("employee", function(){ return user.type === "employee" });
+ * auth.register("employee", "/Error/Redirect", function(){ return user.type === "employee" });
+ * 
+ * auth.register(401, "/Error/P404");
+ * 
+ * auth.config(["ManageCtrl", "CmsCtrl"], ["admin"])
+ * auth.config(["NewsCtrl"], ["admin", "employee"])
+ * auth.config(["HomeCtrl", "LoginCtrl"], ["anonymouce"])
+ * 
+ */
+
+(function () {
+    angular.module(AutoHome.ngModules.services + ".Auth", [])
+        .factory("AuthSvc", function ($location) {
+
+            var configs = { "controller name or path": [/*handles*/] };
+            var service = {
+                version: "0.0.1",
+                globalConfigName: "",
+
+                /**
+                 * 如果认证失败, 进行页面调整
+                 * @param {string} pathOrCtrl URL或者控制器
+                 * @param {function} assert 认证断言
+                 * @param {string} redirecTo 跳转页面
+                 * @returns {AuthSvc} 
+                 */
+                ifUnAuthRedirect: function (pathOrCtrl, assert, redirecTo) {
+                    if (!angular.isFunction(assert)) {
+                        throw "AuthSvc.ifUnAuthRedirect: assert is not a function.";
+                    }
+                    var handle = function (controller) {
+                        if (!assert.apply(service, [controller])) $location.path(redirecTo);
+                    }
+                    return this.config(pathOrCtrl, handle);
+                },
+
+                /**
+                 * 配置认证模块
+                 * @param {string} pathOrCtrl url或者控制器的名字或数组(如果为globalConfigName, 则视为配置的是全局处理回调.)
+                 * @param {function} handle 对应的回调函数
+                 * @returns {AuthSvc} 
+                 */
+                config: function (pathOrCtrl, handle) {
+                    if (angular.isArray(pathOrCtrl)) {
+                        for (var index = 0; index < pathOrCtrl.length; index++) {
+                            var value = pathOrCtrl[index];
+                            this.config(value);
+                        }
+                        return this;
+                    }
+
+
+                    if (!pathOrCtrl && pathOrCtrl !== this.globalConfigName) {
+                        throw "AuthSvc.config: error path or controller name.";
+                    }
+                    if (!angular.isFunction(handle)) {
+                        throw "AuthSvc.config: handle is not a function.";
+                    }
+                    if (!configs[pathOrCtrl]) {
+                        configs[pathOrCtrl] = [];
+                    }
+                    configs[pathOrCtrl].push(handle);
+
+                    return this;
+                },
+                /**
+                 * 开始认证
+                 * @param {object} controller {name:控制器名字, path:当前页面URL, templateUrl: 当前页面对应的模板的URL}
+                 * @returns {} 
+                 */
+                auth: function (controller) {
+                    var globalCallbacks = configs[this.globalConfigName] || [];
+                    var configCallbacks = configs[controller.name] || [];
+                    var callbacks = globalCallbacks.concat(configCallbacks);
+
+                    for (var index = 0; index < callbacks.length; index++) {
+                        var callback = callbacks[index];
+                        if (!angular.isFunction(callback)) {
+                            console.error("AuthSvc.auth: not a function: ", callback);
+                            continue;
+                        }
+                        callback.apply(this, [controller]);
+                    }
+                }
+            };
+            return service;
+        })
+        .run(function (AuthSvc, $rootScope, $location, $route) {
+
+            /*
+             * 
+             * route change events:
+             * 
+             * $routeChangeSuccess
+             * $routeChangeError 
+             * $routeUpdate - if reloadOnSearch property has been set to false
+             * $locationChangeStart 
+             * $locationChangeSuccess
+             */
+
+
+            //监听路由改变事件
+            $rootScope.$on("$routeChangeStart", function () {
+
+                var currentPath = $location.path();
+
+                var controller = {
+                    path: currentPath,
+                    name: undefined,
+                    templateUrl: undefined
+                };
+
+                for (var key in $route.routes) {
+                    var route = $route.routes[key];
+                    if (!route.regexp) { continue; }
+                    var isCurrent = route.regexp.test(currentPath);
+                    if (isCurrent) {
+                        var controllerMatch = /^((\w|\d)+)/g.exec(route.controller);
+                        if (!controllerMatch) { throw "AuthSvc: get controller name error"; }
+                        var controllerName = controllerMatch[0];
+                        controller.name = controllerName;
+                        controller.templateUrl = route.templateUrl;
+                        break;
+                    }
+                }
+
+                AuthSvc.auth(controller);
+            });
+
+
+        });
+})();
