@@ -27,3 +27,5 @@
             fileSize
         }, "text/plain");
     } 
+
+**注意网页里的jQuery引用正确**
