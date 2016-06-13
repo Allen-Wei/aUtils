@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FormData</title>
+    <meta charset="utf-8" />
+    <script src="../../Vendor/jquery-1.10.2.js"></script>
+</head>
+<body>
+    <h1>FormData异步提交表单</h1>
+
+    <form method="post" enctype="multipart/form-data" action="/MockApi/CampatibleSubmitForms" id="form">
+        <div>
+            <label>
+                First Name: <input type="text" name="firstName" />
+            </label>
+        </div>
+        <div>
+            <label>Last Name: <input type="text" value="" name="lastName" /></label>
+        </div>
+        <div>
+            <label>Birthday: <input type="date" value="" name="birthday" /></label>
+        </div>
+        <div>
+            <label>Avatar: <input type="file" name="avatar" /> </label>
+        </div>
+
+        <span id="submit">Submit</span>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $("#submit").on("click", function () {
+                var data = new FormData();
+                data.append("firstName", $("input[name=firstName]").val());
+                data.append("lastName", $("input[name=lastName]").val());
+                data.append("birthday", $("input[name=birthday]").val());
+                data.append("avatar", $("input[name=avatar]")[0].files[0]);
+                var $form = $("#form");
+
+                $.ajax({
+                    method: "POST",
+                    url: $form.attr("action"),
+                    contentType: false,
+                    processData: false,
+                    data: data
+                }).then(function (response) {
+                    alert(response);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
