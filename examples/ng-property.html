@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ng-Property</title>
+    <script src="http://cdn.bootcss.com/angular.js/1.3.0/angular.min.js"></script>
+</head>
+
+<body>
+    <div ng-app="DirctiveApp">
+        <div ng-controller="BodyCtrl as main">
+            <div>
+                <label>Title:
+                    <input type="text" ng-model="main.title" /> </label> &nbsp; &nbsp;
+                <label>Is Multiple:
+                    <input type="checkbox" ng-model="main.isMultipled" /> </label> &nbsp; &nbsp;
+                <label>Is Disable:
+                    <input type="checkbox" ng-model="main.isDisabled" /> </label>
+            </div>
+            <br>
+            <div>
+                <select ng-property="{multiple: main.isMultipled, disabled: main.isDisabled, title: main.title}">
+                    <option>Peking</option>
+                    <option>Shanghai</option>
+                    <option>Tientsin</option>
+                    <option>Sans</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+    var app = angular.module("DirctiveApp", []);
+    app.controller("BodyCtrl", function() {
+        this.title = "this is list.";
+        this.isMultipled = false;
+        this.isDisabled = false;
+    });
+    app.directive("ngProperty", function() {
+        var name = "ngProperty";
+        return {
+            restrict: "A",
+            link: function(scope, iEle, iAttrs) {
+                scope.$watch(iAttrs[name], updateProperties, true);
+
+                function updateProperties() {
+                    var properties = scope.$eval(iAttrs[name]);
+                    for (var key in properties) {
+                        var value = properties[key];
+                        if (typeof value === "boolean") angular.element(iEle).prop(key, value);
+                        else angular.element(iEle).attr(key, value);
+                    }
+                };
+                updateProperties();
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>
