@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <title>Utils Demonstration</title>
+</head>
+
+<body>
+    <script>
+    var person = {
+        firstName: "Alan",
+        lastName: "Wei",
+        age: 26,
+        works: [{
+            date: new Date(2013, 4, 1),
+            company: "Lenovo",
+            inDuty: false
+        }, {
+        	date: new Date(2015, 2, 5),
+        	company:"Google",
+        	inDuty: new Boolean(false)
+        }]
+    };
+    Object.prototype.toJSON = function(){
+    	var t = typeof(this);
+    	if(t  === "boolean"){
+    		//return 
+    	}
+    	return this.toString();
+
+    };
+    Boolean.prototype.toJSON = function(){
+    	return this.toString().toUpperCase();
+    };
+    Date.prototype.toJSON = function(){
+    	return this.getFullYear();
+    };
+
+    var txt = JSON.stringify(person, "--", 4);
+    var ele = document.createElement("pre");
+    var txtNode = document.createTextNode(txt);
+    ele.appendChild(txtNode);
+    document.body.appendChild(ele);
+    </script>
+</body>
+
+</html>
