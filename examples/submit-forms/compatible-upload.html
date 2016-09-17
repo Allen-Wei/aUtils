@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>兼容IE6上传</title>
+    <meta charset="utf-8" />
+    <script src="../../Vendor/jquery-1.10.2.js"></script>
+    <script src="compatible-upload.js"></script>
+</head>
+<body>
+    <h1>兼容 IE8 的表单提交</h1>
+    <form method="post" enctype="multipart/form-data" action="/MockApi/CampatibleSubmitForms" id="form">
+        <div>
+            <label>
+                First Name: <input type="text" name="firstName" />
+            </label>
+        </div>
+        <div>
+            <label>Last Name: <input type="text" value="" name="lastName" /></label>
+        </div>
+        <div>
+            <label>Birthday: <input type="date" value="" name="birthday" /></label>
+        </div>
+        <div>
+            <label>Avatar: <input type="file" name="avatar" /> </label>
+        </div>
+
+        <span id="submit">Submit</span>
+    </form>
+    <script>
+        $(document).ready(function () {
+            var hook = CompatibleUpload("#form");
+
+            $("#submit").on("click", function () {
+                hook.upload().then(function (response) {
+                    alert(response);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
