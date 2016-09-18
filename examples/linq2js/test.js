@@ -6,14 +6,14 @@ var getData = function() {
 
 //Ajax Example
 linq2js.async(function*() {
-	console.log("正在请求1... ");
+	console.log("\n正在请求1... ");
     var response1 = yield linq2js.ajax("/data.json");
 
     var first = response1.rows[0];
-	console.log("请求1完成: ", response1);
+	console.log("\n请求1完成: ", response1);
 
-	console.log("开始请求2...");
+	console.log("\n开始请求2...");
     var response2 = yield linq2js.ajax("/person.json?city=" + first.dealer_city);
-    console.log("请求2完成: ", response2);
+    console.log("\n请求2完成: ", response2);
 
 });
