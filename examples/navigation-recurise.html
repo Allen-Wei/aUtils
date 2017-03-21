@@ -8,7 +8,6 @@
 
 <body>
     <script>
-
     var response = {
         "statusCode": 200,
         "message": "执行成功",
@@ -69,13 +68,27 @@
             "Url": null,
             "UnSelectImgUrl": "Content/MenuPicture/U碳排放计划.png",
             "SelectImgUrl": "Content/MenuPicture/Y碳排放计划.png"
+        }, {
+            "NodeId": 101003040,
+            "ParentId": 10100304,
+            "MenuName": "计划跟踪 Next0",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 101003041,
+            "ParentId": 101003040,
+            "MenuName": "计划跟踪 Next1",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
         }],
         "success": true
     };
     var navs = response.data;
 
     //找到根节点的导航
-    var root = navs.filter(nav => nav.ParentId == null);	
+    var root = navs.filter(nav => nav.ParentId == null);
 
     //递归设置任意节点导航的子节点
     var setChildren = function(parentNav) {
@@ -90,8 +103,25 @@
 
     //设置所有根节点的子节点
     root.forEach(setChildren);
-    
-    console.log(root);
+
+    //绑定HTML
+    var setHtml = function(nav) {
+        var rootElement = document.createElement("ul");
+        var liElement = document.createElement("li");
+        liElement.textContent = nav.MenuName;
+        rootElement.appendChild(liElement);
+
+
+        if (nav.Children && nav.Children.length) {
+            var childNavs = nav.Children.map(setHtml);
+            // console.log(childNavs);
+            childNavs.forEach((node, index) => rootElement.appendChild(node));
+            return rootElement;
+        } else {
+            return rootElement;
+        }
+    };
+    root.map(setHtml).forEach((node,index) => document.body.appendChild(node));
     </script>
 </body>
 
