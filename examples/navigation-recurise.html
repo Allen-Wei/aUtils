@@ -106,12 +106,17 @@
 
     //递归设置任意节点导航的子节点
     var setChildren = function(parentNav) {
+        //如果当前节点子导航不存在 初始化子导航
         if (!parentNav.Children) parentNav.Children = [];
+
+        //设置当前导航的子导航
         navs.forEach(nav => {
             if (nav.ParentId === parentNav.NodeId) {
                 parentNav.Children.push(nav);
             }
         });
+
+        //设置当前导航的子导航的子导航
         parentNav.Children.forEach(setChildren);
     };
 
@@ -126,17 +131,18 @@
         liElement.textContent = nav.MenuName;
         rootElement.appendChild(liElement);
 
-
         if (nav.Children && nav.Children.length) {
             nav.Children
-            .map(setHtml)
-            .forEach((node, index) => liElement.appendChild(node));
+                .map(setHtml)
+                .forEach((node, index) => liElement.appendChild(node));
             return rootElement;
         } else {
             return rootElement;
         }
     };
-    root.map(setHtml).forEach((node,index) => document.body.appendChild(node));
+    root.map(setHtml).forEach((node, index) => document.body.appendChild(node));
+
+
     </script>
 </body>
 
