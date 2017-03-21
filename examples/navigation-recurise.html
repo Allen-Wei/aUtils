@@ -135,10 +135,8 @@
             nav.Children
                 .map(setHtml)
                 .forEach((node, index) => liElement.appendChild(node));
-            return rootElement;
-        } else {
-            return rootElement;
         }
+        return rootElement;
     };
     root.map(setHtml).forEach((node, index) => document.body.appendChild(node));
     </script>
