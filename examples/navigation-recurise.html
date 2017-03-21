@@ -120,6 +120,7 @@
 
     //绑定HTML
     var setHtml = function(nav) {
+
         var rootElement = document.createElement("ul");
         var liElement = document.createElement("li");
         liElement.textContent = nav.MenuName;
@@ -127,9 +128,9 @@
 
 
         if (nav.Children && nav.Children.length) {
-            var childNavs = nav.Children.map(setHtml);
-            // console.log(childNavs);
-            childNavs.forEach((node, index) => rootElement.appendChild(node));
+            nav.Children
+            .map(setHtml)
+            .forEach((node, index) => liElement.appendChild(node));
             return rootElement;
         } else {
             return rootElement;
@@ -137,6 +138,7 @@
     };
     root.map(setHtml).forEach((node,index) => document.body.appendChild(node));
     </script>
+  
 </body>
 
 </html>
