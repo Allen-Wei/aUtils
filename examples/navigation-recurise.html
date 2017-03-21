@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation Recurise</title>
+</head>
+
+<body>
+    <script>
+
+    var response = {
+        "statusCode": 200,
+        "message": "执行成功",
+        "vision": "v1",
+        "data": [{
+            "NodeId": 100846,
+            "ParentId": 100845,
+            "MenuName": "组织边界信息",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 100847,
+            "ParentId": 100845,
+            "MenuName": "设施维护",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 100845,
+            "ParentId": null,
+            "MenuName": "标准查询",
+            "Url": null,
+            "UnSelectImgUrl": "Content/MenuPicture/U碳排放计划.png",
+            "SelectImgUrl": "Content/MenuPicture/Y碳排放计划.png"
+        }, {
+            "NodeId": 10100301,
+            "ParentId": 10100300,
+            "MenuName": "碳排预算",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 10100302,
+            "ParentId": 10100300,
+            "MenuName": "计划编制",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 10100303,
+            "ParentId": 10100300,
+            "MenuName": "计划发布",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 10100304,
+            "ParentId": 10100300,
+            "MenuName": "计划跟踪",
+            "Url": null,
+            "UnSelectImgUrl": null,
+            "SelectImgUrl": null
+        }, {
+            "NodeId": 10100300,
+            "ParentId": null,
+            "MenuName": "碳排放计划",
+            "Url": null,
+            "UnSelectImgUrl": "Content/MenuPicture/U碳排放计划.png",
+            "SelectImgUrl": "Content/MenuPicture/Y碳排放计划.png"
+        }],
+        "success": true
+    };
+    var navs = response.data;
+
+    //找到根节点的导航
+    var root = navs.filter(nav => nav.ParentId == null);	
+
+    //递归设置任意节点导航的子节点
+    var setChildren = function(parentNav) {
+        if (!parentNav.Children) parentNav.Children = [];
+        navs.forEach(nav => {
+            if (nav.ParentId === parentNav.NodeId) {
+                parentNav.Children.push(nav);
+            }
+        });
+        parentNav.Children.forEach(setChildren);
+    };
+
+    //设置所有根节点的子节点
+    root.forEach(setChildren)
+    </script>
+</body>
+
+</html>
