@@ -12,7 +12,7 @@
     navigator.geolocation.watchPosition(function(position) {
         alert("Current positon: lat=" + position.coords.latitude + ", long=" + position.coords.longitude);
     }, function(err) {
-        alert("fail: " + err);
+        alert("fail: " + err.code);
     }, {
         enableHighAccuracy: true,
         maximumAge: 30000,
