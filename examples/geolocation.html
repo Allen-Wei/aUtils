@@ -7,23 +7,17 @@
 </head>
 
 <body>
-<h1>Location sample</h1>
+    <h1>Location sample @ 2017-05-03 16:37:41</h1>
     <script>
-    function geo_success(position) {
-        alert(position.coords.latitude, position.coords.longitude);
-    }
-
-    function geo_error() {
-        alert("Sorry, no position available.");
-    }
-
-    var geo_options = {
+    navigator.geolocation.watchPosition(function(position) {
+        alert("Current positon: lat=" + position.coords.latitude + ", long=" + position.coords.longitude);
+    }, function(err) {
+        alert("fail: " + err);
+    }, {
         enableHighAccuracy: true,
-        maximumAge: 2000,
-        timeout: 2000
-    };
-
-    var wpid = navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+        maximumAge: 30000,
+        timeout: 20000
+    });
     </script>
 </body>
 
