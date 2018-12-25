@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Scroll Next Page</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #scroll ul {}
+
+        #scroll ul li {
+            text-align: center;
+            color: white;
+            height: 30px;
+            line-height: 30px;
+            background-color: #0094ff;
+        }
+
+        #scroll ul li:nth-child(2n) {
+            background-color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="height: 50px; width: 100%; background-color: blue;">head</div>
+    <div style="overflow: hidden; width: 90%; margin: 0 auto; height: 400px;">
+        <div style="overflow: auto; width: 300px; height: 400px; border: 1px solid gray;" id="scroll">
+            <div>
+                <ul></ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var eleScroll = document.getElementById("scroll");
+        var page = 1;
+
+        function nextPage(pageIndex) {
+            var pageSize = 20;
+            var start = (pageIndex - 1) * pageSize;
+            [...Array(pageSize).keys()].forEach(num => {
+                var element = document.createElement("li");
+                element.textContent = start + num;
+                eleScroll.querySelector("ul").appendChild(element);
+            });
+        }
+        nextPage(page++);
+
+        HTMLElement.prototype.onScrollToBottom = function (callback, threshold) {
+            this.addEventListener("scroll", function () {
+                var sub = this.scrollHeight - this.clientHeight - this.scrollTop;
+                if (sub <= (threshold || 0)) {
+                    callback.call(this, sub);
+                }
+            }, false);
+        };
+
+
+        eleScroll.onScrollToBottom(function (sub) {
+            nextPage(page++);
+        });
+    </script>
+</body>
+
+</html>
