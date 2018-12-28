@@ -26,6 +26,7 @@
             background-color: #888;
         }
     </style>
+    <script type="text/javascript" src="../javascripts/scripts/ScrollToBottom.js"></script>
 </head>
 
 <body>
@@ -53,16 +54,6 @@
             });
         }
         nextPage(page++);
-
-        HTMLElement.prototype.onScrollToBottom = function (callback, threshold) {
-            this.addEventListener("scroll", function () {
-                var sub = this.scrollHeight - this.clientHeight - this.scrollTop;
-                if (sub <= (threshold || 0)) {
-                    callback.call(this, sub);
-                }
-            }, false);
-        };
-
 
         eleScroll.onScrollToBottom(function (sub) {
             nextPage(page++);
