@@ -10,8 +10,10 @@ HTMLElement.prototype.onScrollToBottom = function (callback, threshold) {
 * 参考 https://stackoverflow.com/questions/14035180/jquery-load-more-data-on-scroll
 */
 window.onScrollToBottom = function (callback, threshold) {
-	var sub = document.documentElement.offsetHeight - window.innerHeight - window.pageYOffset;
-	if (sub <= (threshold || 0)) {
-    	callback.call(this, sub);
-    }
+	window.addEventListener("scroll", function(){
+		var sub = document.documentElement.offsetHeight - window.innerHeight - window.pageYOffset;
+		if (sub <= (threshold || 0)) {
+	    	callback.call(this, sub);
+	    }		
+	}, false);
 };
