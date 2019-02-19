@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
+  <title>Vue Sample</title>
   <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
   <div id="container">
@@ -16,7 +17,9 @@
   </div>
   <script>
     //广告初始化 
-    document.write("<script src='./vue-simple.js' />");
+    var html = $("<div />").append(`<script src="http://github.alanwei.net/aUtils/examples/vue-simple.js" />`).html();
+    console.log("html: ", html);
+    document.write(html);
   </script>
   <script>
     new Vue({
